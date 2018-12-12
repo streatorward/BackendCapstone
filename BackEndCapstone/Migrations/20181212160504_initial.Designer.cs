@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BackEndCapstone.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20181211211600_Inital")]
-    partial class Inital
+    [Migration("20181212160504_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -78,7 +78,7 @@ namespace BackEndCapstone.Migrations
                     b.ToTable("AspNetUsers");
 
                     b.HasData(
-                        new { Id = "ac45b86f-1f34-4838-90cf-09a56b5ed3af", AccessFailedCount = 0, ConcurrencyStamp = "2cc784e3-0297-46c0-a7bd-9a3a656eab9b", Email = "admin@admin.com", EmailConfirmed = true, FirstName = "admin", LastName = "admin", LockoutEnabled = false, NormalizedEmail = "ADMIN@ADMIN.COM", NormalizedUserName = "ADMIN@ADMIN.COM", PasswordHash = "AQAAAAEAACcQAAAAEKRFHJbxDeZchq/UMxErSWlWN616v2iTgd3zubf7W/neMIvcx6amNXW7Dm1EDgYIkQ==", PhoneNumberConfirmed = false, SecurityStamp = "6b7f16b2-882c-494d-bbbe-a8018509fc30", TwoFactorEnabled = false, UserName = "admin@admin.com" }
+                        new { Id = "47bdf9cf-54b1-45e2-8fb7-d2290a895994", AccessFailedCount = 0, ConcurrencyStamp = "b878a200-c098-44e6-a07e-199877804c53", Email = "admin@admin.com", EmailConfirmed = true, FirstName = "admin", LastName = "admin", LockoutEnabled = false, NormalizedEmail = "ADMIN@ADMIN.COM", NormalizedUserName = "ADMIN@ADMIN.COM", PasswordHash = "AQAAAAEAACcQAAAAEOkdqTv27Hi+lAofSnxf0xJj0SGdwne37seln1N3FupGouy7RwZ60NQRLhB6xf/CEg==", PhoneNumberConfirmed = false, SecurityStamp = "7a8d4ed1-af4f-4dd8-95c4-f580d02608d0", TwoFactorEnabled = false, UserName = "admin@admin.com" }
                     );
                 });
 
@@ -175,6 +175,8 @@ namespace BackEndCapstone.Migrations
                     b.Property<string>("Description")
                         .IsRequired();
 
+                    b.Property<int?>("EmployeeId");
+
                     b.Property<bool>("IsComplete");
 
                     b.Property<string>("Title")
@@ -186,11 +188,13 @@ namespace BackEndCapstone.Migrations
 
                     b.HasIndex("DepartmentId");
 
+                    b.HasIndex("EmployeeId");
+
                     b.ToTable("Tickets");
 
                     b.HasData(
-                        new { TicketId = 1, ApplicationUserId = "ac45b86f-1f34-4838-90cf-09a56b5ed3af", DepartmentId = 1, Description = "Go through all shoes that are displayed on the back wall and tuck shoe laces into shoes to make a cleaner look.", IsComplete = false, Title = "Fix Shoes" },
-                        new { TicketId = 2, ApplicationUserId = "ac45b86f-1f34-4838-90cf-09a56b5ed3af", DepartmentId = 2, Description = "Go through all climbing rope and organize by length, static, and dynamic.", IsComplete = false, Title = "Organize Rope" }
+                        new { TicketId = 1, ApplicationUserId = "47bdf9cf-54b1-45e2-8fb7-d2290a895994", DepartmentId = 1, Description = "Go through all shoes that are displayed on the back wall and tuck shoe laces into shoes to make a cleaner look.", IsComplete = false, Title = "Fix Shoes" },
+                        new { TicketId = 2, ApplicationUserId = "47bdf9cf-54b1-45e2-8fb7-d2290a895994", DepartmentId = 2, Description = "Go through all climbing rope and organize by length, static, and dynamic.", IsComplete = false, Title = "Organize Rope" }
                     );
                 });
 
@@ -346,6 +350,10 @@ namespace BackEndCapstone.Migrations
                         .WithMany()
                         .HasForeignKey("DepartmentId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("BackEndCapstone.Models.Employee", "Employee")
+                        .WithMany()
+                        .HasForeignKey("EmployeeId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

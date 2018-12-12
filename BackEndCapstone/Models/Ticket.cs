@@ -31,6 +31,15 @@ namespace BackEndCapstone.Models
 
         public ApplicationUser ApplicationUser { get; set; }
 
+
+        [Display(Name = "Employee")]
+        public int? EmployeeId { get; set; }
+
+        public Employee Employee { get; set; }
+
+        [Display(Name = "Complete?")]
         public bool IsComplete { get; set; }
+
+        public virtual ICollection<EmployeeTicket> EmployeeTickets { get; set; }
     }
 }

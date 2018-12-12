@@ -7,22 +7,29 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BackEndCapstone.Data;
 using BackEndCapstone.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace BackEndCapstone.Controllers
 {
     public class TicketsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public TicketsController(ApplicationDbContext context)
+        public TicketsController(ApplicationDbContext context,
+            UserManager<ApplicationUser> userManager)
         {
+            _userManager = userManager;
             _context = context;
         }
+
+        private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
+
 
         // GET: Tickets
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Tickets.Include(t => t.ApplicationUser).Include(t => t.Department);
+            var applicationDbContext = _context.Tickets.Include(t => t.ApplicationUser).Include(t => t.Department).Include(t => t.Employee);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -37,6 +44,8 @@ namespace BackEndCapstone.Controllers
             var ticket = await _context.Tickets
                 .Include(t => t.ApplicationUser)
                 .Include(t => t.Department)
+                .Include(t => t.Employee)
+                .Include(t => t.EmployeeTickets)
                 .FirstOrDefaultAsync(m => m.TicketId == id);
             if (ticket == null)
             {
@@ -51,6 +60,7 @@ namespace BackEndCapstone.Controllers
         {
             ViewData["ApplicationUserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id");
             ViewData["DepartmentId"] = new SelectList(_context.Departments, "DepartmentId", "Name");
+            ViewData["EmployeeId"] = new SelectList(_context.Employees, "EmployeeId", "FirstName");
             return View();
         }
 
@@ -59,16 +69,23 @@ namespace BackEndCapstone.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TicketId,Title,Description,DepartmentId,ApplicationUserId,IsComplete")] Ticket ticket)
+        public async Task<IActionResult> Create([Bind("TicketId,Title,Description,DepartmentId,ApplicationUserId,EmployeeId,IsComplete")] Ticket ticket)
         {
+            var user = await GetCurrentUserAsync();
+
+            ModelState.Remove("User");
+            ModelState.Remove("ApplicationUserId");
+
             if (ModelState.IsValid)
             {
+                ticket.ApplicationUser = user;
                 _context.Add(ticket);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             ViewData["ApplicationUserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", ticket.ApplicationUserId);
             ViewData["DepartmentId"] = new SelectList(_context.Departments, "DepartmentId", "Name", ticket.DepartmentId);
+            ViewData["EmployeeId"] = new SelectList(_context.Employees, "EmployeeId", "FirstName", ticket.EmployeeId);
             return View(ticket);
         }
 
@@ -87,6 +104,7 @@ namespace BackEndCapstone.Controllers
             }
             ViewData["ApplicationUserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", ticket.ApplicationUserId);
             ViewData["DepartmentId"] = new SelectList(_context.Departments, "DepartmentId", "Name", ticket.DepartmentId);
+            ViewData["EmployeeId"] = new SelectList(_context.Employees, "EmployeeId", "FirstName", ticket.EmployeeId);
             return View(ticket);
         }
 
@@ -95,7 +113,7 @@ namespace BackEndCapstone.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TicketId,Title,Description,DepartmentId,ApplicationUserId,IsComplete")] Ticket ticket)
+        public async Task<IActionResult> Edit(int id, [Bind("TicketId,Title,Description,DepartmentId,ApplicationUserId,EmployeeId,IsComplete")] Ticket ticket)
         {
             if (id != ticket.TicketId)
             {
@@ -124,6 +142,7 @@ namespace BackEndCapstone.Controllers
             }
             ViewData["ApplicationUserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", ticket.ApplicationUserId);
             ViewData["DepartmentId"] = new SelectList(_context.Departments, "DepartmentId", "Name", ticket.DepartmentId);
+            ViewData["EmployeeId"] = new SelectList(_context.Employees, "EmployeeId", "FirstName", ticket.EmployeeId);
             return View(ticket);
         }
 
@@ -138,6 +157,7 @@ namespace BackEndCapstone.Controllers
             var ticket = await _context.Tickets
                 .Include(t => t.ApplicationUser)
                 .Include(t => t.Department)
+                .Include(t => t.Employee)
                 .FirstOrDefaultAsync(m => m.TicketId == id);
             if (ticket == null)
             {

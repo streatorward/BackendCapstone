@@ -91,6 +91,7 @@ namespace BackEndCapstone.Data
                    Title = "Fix Shoes",
                    Description = "Go through all shoes that are displayed on the back wall and tuck shoe laces into shoes to make a cleaner look.",
                    DepartmentId = 1,
+                   EmployeeId = null,
                    ApplicationUserId = user.Id,
                    IsComplete = false
                },
@@ -100,6 +101,7 @@ namespace BackEndCapstone.Data
                    Title = "Organize Rope",
                    Description = "Go through all climbing rope and organize by length, static, and dynamic.",
                    DepartmentId = 2,
+                   EmployeeId = null,
                    ApplicationUserId = user.Id,
                    IsComplete = false
                }

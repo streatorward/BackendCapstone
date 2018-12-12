@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BackEndCapstone.Migrations
 {
-    public partial class Inital : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -207,6 +207,7 @@ namespace BackEndCapstone.Migrations
                     Description = table.Column<string>(nullable: false),
                     DepartmentId = table.Column<int>(nullable: false),
                     ApplicationUserId = table.Column<string>(nullable: false),
+                    EmployeeId = table.Column<int>(nullable: true),
                     IsComplete = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
@@ -224,6 +225,12 @@ namespace BackEndCapstone.Migrations
                         principalTable: "Departments",
                         principalColumn: "DepartmentId",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Tickets_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
+                        principalTable: "Employees",
+                        principalColumn: "EmployeeId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -255,7 +262,7 @@ namespace BackEndCapstone.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "FirstName", "LastName", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "ac45b86f-1f34-4838-90cf-09a56b5ed3af", 0, "2cc784e3-0297-46c0-a7bd-9a3a656eab9b", "admin@admin.com", true, "admin", "admin", false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAEAACcQAAAAEKRFHJbxDeZchq/UMxErSWlWN616v2iTgd3zubf7W/neMIvcx6amNXW7Dm1EDgYIkQ==", null, false, "6b7f16b2-882c-494d-bbbe-a8018509fc30", false, "admin@admin.com" });
+                values: new object[] { "47bdf9cf-54b1-45e2-8fb7-d2290a895994", 0, "b878a200-c098-44e6-a07e-199877804c53", "admin@admin.com", true, "admin", "admin", false, null, "ADMIN@ADMIN.COM", "ADMIN@ADMIN.COM", "AQAAAAEAACcQAAAAEOkdqTv27Hi+lAofSnxf0xJj0SGdwne37seln1N3FupGouy7RwZ60NQRLhB6xf/CEg==", null, false, "7a8d4ed1-af4f-4dd8-95c4-f580d02608d0", false, "admin@admin.com" });
 
             migrationBuilder.InsertData(
                 table: "Departments",
@@ -280,13 +287,13 @@ namespace BackEndCapstone.Migrations
 
             migrationBuilder.InsertData(
                 table: "Tickets",
-                columns: new[] { "TicketId", "ApplicationUserId", "DepartmentId", "Description", "IsComplete", "Title" },
-                values: new object[] { 1, "ac45b86f-1f34-4838-90cf-09a56b5ed3af", 1, "Go through all shoes that are displayed on the back wall and tuck shoe laces into shoes to make a cleaner look.", false, "Fix Shoes" });
+                columns: new[] { "TicketId", "ApplicationUserId", "DepartmentId", "Description", "EmployeeId", "IsComplete", "Title" },
+                values: new object[] { 1, "47bdf9cf-54b1-45e2-8fb7-d2290a895994", 1, "Go through all shoes that are displayed on the back wall and tuck shoe laces into shoes to make a cleaner look.", null, false, "Fix Shoes" });
 
             migrationBuilder.InsertData(
                 table: "Tickets",
-                columns: new[] { "TicketId", "ApplicationUserId", "DepartmentId", "Description", "IsComplete", "Title" },
-                values: new object[] { 2, "ac45b86f-1f34-4838-90cf-09a56b5ed3af", 2, "Go through all climbing rope and organize by length, static, and dynamic.", false, "Organize Rope" });
+                columns: new[] { "TicketId", "ApplicationUserId", "DepartmentId", "Description", "EmployeeId", "IsComplete", "Title" },
+                values: new object[] { 2, "47bdf9cf-54b1-45e2-8fb7-d2290a895994", 2, "Go through all climbing rope and organize by length, static, and dynamic.", null, false, "Organize Rope" });
 
             migrationBuilder.InsertData(
                 table: "EmployeeTickets",
@@ -366,6 +373,11 @@ namespace BackEndCapstone.Migrations
                 name: "IX_Tickets_DepartmentId",
                 table: "Tickets",
                 column: "DepartmentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tickets_EmployeeId",
+                table: "Tickets",
+                column: "EmployeeId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -392,13 +404,13 @@ namespace BackEndCapstone.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Employees");
-
-            migrationBuilder.DropTable(
                 name: "Tickets");
 
             migrationBuilder.DropTable(
                 name: "Departments");
+
+            migrationBuilder.DropTable(
+                name: "Employees");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

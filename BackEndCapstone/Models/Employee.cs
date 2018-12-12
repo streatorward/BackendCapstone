@@ -22,5 +22,8 @@ namespace BackEndCapstone.Models
         [Required]
         [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
+
+        public virtual ICollection<EmployeeTicket> EmployeeTickets { get; set; }
+
     }
 }
