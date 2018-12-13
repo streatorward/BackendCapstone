@@ -29,8 +29,36 @@ namespace BackEndCapstone.Controllers
         // GET: Tickets
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Tickets.Include(t => t.ApplicationUser).Include(t => t.Department).Include(t => t.Employee);
+            var applicationDbContext = _context.Tickets
+                .Include(t => t.ApplicationUser)
+                .Include(t => t.Department)
+                .Include(t => t.Employee);
+               
             return View(await applicationDbContext.ToListAsync());
+        }
+
+        public IActionResult CompletedTickets()
+        {
+            var applicationDbContext = _context.Tickets
+                .Include(t => t.ApplicationUser)
+                .Include(t => t.Department)
+                .Include(t => t.EmployeeTickets)
+                .Include(t => t.Employee)
+                .Where(t => t.IsComplete == true).ToList();
+            return View(applicationDbContext);
+        }
+
+        public IActionResult NotCompletedTickets()
+        {
+            var applicationDbContext = _context.Tickets
+                .Include(t => t.ApplicationUser)
+                .Include(t => t.Department)
+                .Include(t => t.EmployeeTickets)
+                .Include(t => t.Employee)
+                .Where(t => t.IsComplete == false).ToList();
+
+
+            return View(applicationDbContext);
         }
 
         // GET: Tickets/Details/5
@@ -69,7 +97,7 @@ namespace BackEndCapstone.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TicketId,Title,Description,DepartmentId,ApplicationUserId,EmployeeId,IsComplete")] Ticket ticket)
+        public async Task<IActionResult> Create(Ticket ticket)
         {
             var user = await GetCurrentUserAsync();
 
@@ -113,7 +141,7 @@ namespace BackEndCapstone.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TicketId,Title,Description,DepartmentId,ApplicationUserId,EmployeeId,IsComplete")] Ticket ticket)
+        public async Task<IActionResult> Edit(int id, Ticket ticket)
         {
             if (id != ticket.TicketId)
             {
@@ -178,9 +206,35 @@ namespace BackEndCapstone.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TicketExists(int id)
+        public bool TicketExists(int id)
         {
             return _context.Tickets.Any(e => e.TicketId == id);
+        }
+
+        public async Task<IActionResult> MarkComplete(int id)
+        {
+            if (id != 0)
+            {
+                var ticket = await _context.Tickets.FindAsync(id);
+                ticket.IsComplete = !ticket.IsComplete;
+                _context.Tickets.Update(ticket);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(CompletedTickets));
+            }
+            return RedirectToAction(nameof(CompletedTickets));
+        }
+
+        public async Task<IActionResult> OtherMarkComplete(int id)
+        {
+            if (id != 0)
+            {
+                var ticket = await _context.Tickets.FindAsync(id);
+                ticket.IsComplete = !ticket.IsComplete;
+                _context.Tickets.Update(ticket);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(NotCompletedTickets));
+            }
+            return RedirectToAction(nameof(NotCompletedTickets));
         }
     }
 }
