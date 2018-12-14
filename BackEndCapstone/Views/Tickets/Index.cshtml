@@ -1,21 +1,38 @@
 ﻿@model IEnumerable<BackEndCapstone.Models.Ticket>
-
-<h2>Active Tickets</h2>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
-            
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Department)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Employee)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsComplete)
+            </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr>
-                
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Department.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Employee.FirstName)
+                </td>
+                <td>
+                    @Html.CheckBoxFor(modelItem => item.IsComplete, new { id = item.TicketId, @class = "toggle", data_url = Url.Action("MarkComplete", "Tickets") })
+                </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.TicketId">Assign</a> |
                     <a asp-action="Details" asp-route-id="@item.TicketId">Details</a> |
