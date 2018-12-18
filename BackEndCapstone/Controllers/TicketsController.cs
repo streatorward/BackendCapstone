@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using BackEndCapstone.Data;
 using BackEndCapstone.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BackEndCapstone.Controllers
 {
@@ -84,6 +85,7 @@ namespace BackEndCapstone.Controllers
         }
 
         // GET: Tickets/Create
+        [Authorize]
         public IActionResult Create()
         {
             ViewData["ApplicationUserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id");
@@ -96,6 +98,7 @@ namespace BackEndCapstone.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Ticket ticket)
         {
@@ -175,6 +178,7 @@ namespace BackEndCapstone.Controllers
         }
 
         // GET: Tickets/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)

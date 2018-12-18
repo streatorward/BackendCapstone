@@ -10,38 +10,14 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.css"/>
     </environment>
     <environment exclude="Development">
-        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
-              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
-              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
     </environment>
 </head>
 <body>
-    @*<nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a asp-area="" asp-controller="Tickets" asp-action="Index" class="navbar-brand">Project Name</a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Tickets" asp-action="NotCompletedTickets">Active</a></li>
-                    <li><a asp-area="" asp-controller="Tickets" asp-action="CompletedTickets">Completed</a></li>
-                </ul>
-                <partial name="_LoginPartial" />
-            </div>
-        </div>
-    </nav>*@
-
-    <nav class="navbar" role="navigation" aria-label="main navigation">
+    <nav class="navbar is-info" role="navigation" aria-label="main navigation">
         <div class="navbar-brand">
+                <img src="~/images/TASKDECK.png" height="15">
             <a class="navbar-item" href="">
-                <img src="https://bulma.io/images/bulma-logo.png" width="112" height="28">
             </a>
             <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
                 <span aria-hidden="true"></span>
@@ -55,14 +31,6 @@
                 <a class="navbar-item" asp-area="" asp-controller="Tickets" asp-action="CompletedTickets">Completed</a>   
                 <partial name="_LoginPartial" />
             </div>
-            @*<div class="navbar-end">
-            <div class="navbar-item">
-                <div class="buttons">
-                    <a class="navbar-item" asp-area="Identity" asp-page="/Account/Register">Register</a>
-                    <a class="navbar-item" asp-area="Identity" asp-page="/Account/Login">Login</a>
-                </div>
-            </div>
-        </div>*@
         </div>
     </nav>
 
@@ -89,7 +57,7 @@
                 integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
         </script>
         <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
-                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                
                 asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
                 crossorigin="anonymous"
                 integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">

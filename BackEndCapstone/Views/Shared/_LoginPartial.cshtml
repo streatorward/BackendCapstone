@@ -5,7 +5,20 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-<form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post" id="logoutForm" class="navbar-right">
+        <div class="navbar-item has-dropdown">
+            <a class="navbar-link">
+                Manager Options
+            </a>
+            <div class="navbar-dropdown">
+                <a class="navbar-item is-hoverable" asp-area="" asp-controller="Employees" asp-action="Index">Employees</a>
+                <a class="navbar-item is-hoverable" asp-area="" asp-controller="Departments" asp-action="Index">Departments</a>
+            </div>
+        </div>
+<form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" method="post" id="logoutForm" class="navbar-item">
+        <div>
+            <button type="submit" class="button is-info">Logout</button>
+        </div>
+</form>
     @*<ul class="nav navbar-nav navbar-right">
             <li>
                 <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
@@ -14,22 +27,12 @@
                 <button type="submit" class="btn btn-link navbar-btn navbar-link">Logout</button>
             </li>
         </ul>*@
-        <div class="navbar-item has-dropdown is-hoverable">
-            <a class="navbar-link">
-                Manager Options
-            </a>
-            <div class="navbar-dropdown">
-                <a class="navbar-item" asp-area="" asp-controller="Employees" asp-action="Index">Employees</a>
-                <a class="navbar-item" asp-area="" asp-controller="Departments" asp-action="Index">Departments</a>
-            </div>
-        </div>
-        <button type="submit" class="navbar-item">Logout</button>
-</form>
+
 }
 else
 {
-    <ul class="nav navbar-nav navbar-right">
-        <li><a class="navbar-item" asp-area="Identity" asp-page="/Account/Register">Register</a></li>
-        <li><a class="navbar-item" asp-area="Identity" asp-page="/Account/Login">Login</a></li>
-    </ul>
-}
+    <div class="navbar-start">
+        <a class="navbar-item" asp-area="Identity" asp-page="/Account/Register">Register</a>
+        <a class="navbar-item" asp-area="Identity" asp-page="/Account/Login">Login</a>
+    </div>
+    }

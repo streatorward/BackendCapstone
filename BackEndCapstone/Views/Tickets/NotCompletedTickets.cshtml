@@ -1,7 +1,5 @@
 ﻿@model IEnumerable<BackEndCapstone.Models.Ticket>
 
-<h1>Active Tickets</h1>
-
 <p>
     <a asp-action="Create">Create New</a>
 </p>
@@ -41,8 +39,7 @@
                 </td>
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.TicketId">Assign</a> |
-                    <a asp-action="Details" asp-route-id="@item.TicketId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.TicketId">Delete</a>
+                    <a asp-action="Details" asp-route-id="@item.TicketId">Details</a>
                 </td>
             </tr>
 
