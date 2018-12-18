@@ -14,11 +14,9 @@
                 url: url,
                 data: { id: id },
                 type: 'POST',
-                success: function (response) {
-                    alert("You did it!");
-                }
+                
             });
-            $(this).closest('tr').remove();
+            $(this).closest('div').remove();
         });
 });
 

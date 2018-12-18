@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<BackEndCapstone.Models.Ticket>
 
-@{
+@*@{
     ViewData["Title"] = "CompletedTickets";
 }
 
@@ -46,4 +46,32 @@
 
         }
     </tbody>
-</table>
+</table>*@
+
+
+<div class="column">
+    <p class="title is-5">Completed Tickets</p>
+    <p class="subtitle">Below is a list of tickets that have been finished in the shop.</p>
+    <div>
+        @foreach (var item in Model)
+        {
+        <div class="box">
+            <div>
+                @Html.DisplayFor(modelItem => item.Department.Name)
+            </div>
+            <div>
+                @Html.DisplayFor(modelItem => item.Title)
+            </div>
+            <div>
+                @Html.DisplayFor(modelItem => item.Employee.FirstName)
+            </div>
+
+            @Html.CheckBoxFor(modelItem => item.IsComplete, new { id = item.TicketId, @class = "toggle", data_url = Url.Action("MarkComplete", "Tickets") })
+            <div>
+                <a class="button is-small is-info" asp-action="Edit" asp-route-id="@item.TicketId">Assign</a>
+                <a class="button is-small is-info" asp-action="Details" asp-route-id="@item.TicketId">Details</a>
+            </div>
+        </div>
+        }
+    </div>
+</div>

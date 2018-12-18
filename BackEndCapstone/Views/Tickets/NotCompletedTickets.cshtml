@@ -3,7 +3,7 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+@*<table class="table">
     <thead>
         <tr>
             <th>
@@ -45,4 +45,60 @@
 
         }
     </tbody>
-</table>
+</table>*@
+
+
+
+                    @*@foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Title)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Department.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Employee.FirstName)
+                            </td>
+                            <td>
+                                @Html.CheckBoxFor(modelItem => item.IsComplete, new { id = item.TicketId, @class = "toggle", data_url = Url.Action("MarkComplete", "Tickets") })
+                            </td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.TicketId">Assign</a> |
+                                <a asp-action="Details" asp-route-id="@item.TicketId">Details</a>
+                            </td>
+                        </tr>
+
+                    }*@
+<div class="column">
+    <p class="title is-5">Active Tickets</p>
+    <p class="subtitle">Below is a list of tickets that still need to be completed in shop.</p>
+
+        <a class="button is-info" asp-action="Create">Create New Ticket</a>
+
+    <div>
+        @foreach (var item in Model)
+        {
+            <div class="box">
+                <div>
+                    <h5 class="title is-5">Department</h5>
+                    @Html.DisplayFor(modelItem => item.Department.Name)
+                </div>
+                <div>
+                    <h5 class="title is-5">Ticket</h5>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </div>
+                <div>
+                    <h5 class="title is-5">Employee</h5>
+                    @Html.DisplayFor(modelItem => item.Employee.FirstName)
+                </div>
+                @Html.CheckBoxFor(modelItem => item.IsComplete, new { id = item.TicketId, @class = "toggle", data_url = Url.Action("MarkComplete", "Tickets") })
+                <div>
+                    <a class="button is-small is-info" asp-action="Edit" asp-route-id="@item.TicketId">Assign</a>
+                    <a class="button is-small is-info" asp-action="Details" asp-route-id="@item.TicketId">Details</a>
+                </div>
+            </div>
+        }
+    </div>
+</div>
