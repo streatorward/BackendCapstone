@@ -70,7 +70,7 @@ namespace BackEndCapstone
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Tickets}/{action=Index}/{id?}");
+                    template: "{controller=Tickets}/{action=NotCompletedTickets}/{id?}");
             });
         }
     }

@@ -103,7 +103,7 @@ namespace BackEndCapstone.Controllers
         public async Task<IActionResult> Create(Ticket ticket)
         {
             var user = await GetCurrentUserAsync();
-
+            
             ModelState.Remove("User");
             ModelState.Remove("ApplicationUserId");
 
@@ -112,7 +112,7 @@ namespace BackEndCapstone.Controllers
                 ticket.ApplicationUser = user;
                 _context.Add(ticket);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(NotCompletedTickets));
             }
             ViewData["ApplicationUserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", ticket.ApplicationUserId);
             ViewData["DepartmentId"] = new SelectList(_context.Departments, "DepartmentId", "Name", ticket.DepartmentId);
@@ -169,7 +169,7 @@ namespace BackEndCapstone.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(NotCompletedTickets));
             }
             ViewData["ApplicationUserId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", ticket.ApplicationUserId);
             ViewData["DepartmentId"] = new SelectList(_context.Departments, "DepartmentId", "Name", ticket.DepartmentId);
